@@ -1,4 +1,4 @@
-use rust_actix_web_template_web::startup;
+use web::startup;
 
 pub struct TestServer {
     pub address: String,

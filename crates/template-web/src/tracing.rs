@@ -9,7 +9,7 @@ use tracing_subscriber::{EnvFilter, Registry};
 ///
 /// Basic usage:
 /// ```
-/// use rust_actix_web_template_web::tracing;
+/// use template_web::tracing;
 ///
 /// let subscriber = tracing::configure("info");
 ///
@@ -19,13 +19,13 @@ pub fn init(subscriber: impl Subscriber + Send + Sync) {
     subscriber::set_global_default(subscriber).expect("setting tracing default failed.");
 }
 
-/// Returns a preconfigured tracing subscriber.
+/// Returns a pre-configured tracing subscriber.
 ///
 /// # Examples
 ///
 /// Basic usage:
 /// ```
-/// use rust_actix_web_template_web::tracing;
+/// use template_web::tracing;
 ///
 /// let subscriber = tracing::configure("info");
 /// ```
@@ -62,14 +62,14 @@ impl<T, E: std::fmt::Display> TraceErrorExt<T, E> for Result<T, E> {
     ///
     /// Basic `Ok` usage:
     /// ```
-    /// use rust_actix_web_template_web::tracing::TraceErrorExt;
+    /// use template_web::tracing::TraceErrorExt;
     ///
     /// let result: Result<i32, String> = Ok(42).trace_err();
     /// ```
     ///
     /// Basic `Err` usage:
     /// ```
-    /// use rust_actix_web_template_web::tracing::TraceErrorExt;
+    /// use template_web::tracing::TraceErrorExt;
     ///
     /// let result: Result<i32, String> = Err("Something went wrong".to_string()).trace_err();
     /// ```

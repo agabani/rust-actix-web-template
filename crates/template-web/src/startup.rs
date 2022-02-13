@@ -11,7 +11,6 @@ use actix_web::{web, App, HttpServer};
 /// Will panic if configuration cannot be fully loaded due to missing environment variables.
 ///
 /// Will panic if http server cannot bind socket address.
-#[must_use]
 pub fn run(overrides: &[(&str, &str)]) -> (Server, u16, Configuration) {
     let configuration = Configuration::load(overrides)
         .trace_err()

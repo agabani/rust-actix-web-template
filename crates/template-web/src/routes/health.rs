@@ -5,10 +5,12 @@ pub fn config(cfg: &mut web::ServiceConfig) {
         .route("readiness", web::get().to(readiness_get));
 }
 
-fn liveness_get() -> HttpResponse {
+#[allow(clippy::unused_async)]
+async fn liveness_get() -> HttpResponse {
     HttpResponse::Ok().finish()
 }
 
-fn readiness_get() -> HttpResponse {
+#[allow(clippy::unused_async)]
+async fn readiness_get() -> HttpResponse {
     HttpResponse::Ok().finish()
 }

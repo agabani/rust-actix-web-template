@@ -1,4 +1,4 @@
-use rust_actix_web_template_web::{startup, tracing as trace};
+use template_web::{startup, tracing as trace};
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
