@@ -27,3 +27,17 @@ async fn health_check_readiness_works() {
 
     assert_eq!(response.status().as_u16(), 200);
 }
+
+#[actix_rt::test]
+async fn metrics_works() {
+    let test_server = test_server::TestServer::spawn(&[]).await;
+    let client = reqwest::Client::new();
+
+    let response = client
+        .get(&format!("{}/metrics", test_server.address))
+        .send()
+        .await
+        .expect("Failed to send request.");
+
+    assert_eq!(response.status().as_u16(), 200);
+}
