@@ -1,4 +1,4 @@
-name: Tests
+name: CI/CD
 
 on:
   push:
@@ -11,7 +11,10 @@ on:
 jobs:
   cargo-build:
     name: Cargo Build
-    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -34,12 +37,7 @@ jobs:
         uses: actions-rs/cargo@v1
         with:
           command: build
-      - name: Upload Artifact
-        uses: actions/upload-artifact@v2
-        with:
-          name: rust-actix-web-template-web
-          path: |
-            ./target/debug/rust-actix-web-template-web
+          args: --workspace --release --all-features
 
   cargo-clippy:
     name: Cargo Clippy
@@ -62,12 +60,13 @@ jobs:
         uses: actions-rs/toolchain@v1
         with:
           components: clippy
+          profile: minimal
           override: true
           toolchain: stable
       - name: Clippy
         uses: actions-rs/clippy-check@v1
         with:
-          args: -- -D warnings
+          args: --workspace -- -D warnings
           name: Clippy Results
           token: ${{ secrets.GITHUB_TOKEN }}
 
@@ -101,7 +100,7 @@ jobs:
         uses: actions-rs/cargo@v1
         with:
           command: test
-          args: --all-features --no-fail-fast
+          args: --workspace --all-features --no-fail-fast
         env:
           CARGO_INCREMENTAL: '0'
           RUSTFLAGS: '-Zprofile -Ccodegen-units=1 -Cinline-threshold=0 -Clink-dead-code -Coverflow-checks=off -Cpanic=abort -Zpanic_abort_tests'
@@ -140,6 +139,7 @@ jobs:
       - name: Toolchain
         uses: actions-rs/toolchain@v1
         with:
+          components: rustfmt
           profile: minimal
           override: true
           toolchain: stable
@@ -151,7 +151,10 @@ jobs:
 
   cargo-test:
     name: Cargo Test
-    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
     needs:
       - cargo-build
     steps:
@@ -176,3 +179,4 @@ jobs:
         uses: actions-rs/cargo@v1
         with:
           command: test
+          args: --workspace
